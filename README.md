@@ -41,45 +41,145 @@ When "Custom scale…" is selected:
 
 ---
 
-## Installation
+## Deployment
 
-### Option A — ZIP upload (recommended)
+This widget is written in TypeScript/TSX and must be **compiled** before it can be used in ArcGIS Enterprise. The following steps describe the complete process from source code to a running widget.
 
-1. Download the latest release ZIP from the [Releases](../../releases) page.
-2. In Experience Builder, open your app and go to **Widgets → Custom**.
-3. Click **+ Add custom widget** and upload the ZIP.
-4. Drag the widget onto your page.
+### Prerequisites
 
-### Option B — Developer environment
-
-1. Clone this repository into your Experience Builder `client/your-extensions/widgets/` directory:
-
-```bash
-cd /path/to/experience-builder/client/your-extensions/widgets/
-git clone https://github.com/<your-username>/exb-custom-map-scale.git
-```
-
-2. Restart the Experience Builder dev server — the widget appears automatically.
+- [Node.js](https://nodejs.org/) 18 or newer (LTS recommended)
+- [ArcGIS Experience Builder Developer Edition 1.17](https://developers.arcgis.com/experience-builder/guide/install-guide/) downloaded and installed locally
+- A web server reachable from your ArcGIS Enterprise environment (IIS, Apache, nginx, or similar), accessible via **HTTPS**
+- Administrator access to ArcGIS Enterprise
 
 ---
 
-## Configuration
+### Step 1 — Place the widget in the Developer Edition
 
-Open the widget settings panel in Experience Builder:
+1. Locate your Experience Builder Developer Edition installation folder.
+2. Navigate to:
+   ```
+   client/your-extensions/widgets/
+   ```
+3. Copy the `exb-custom-map-scale` folder (the contents of this repository) into that directory:
+   ```
+   client/your-extensions/widgets/exb-custom-map-scale/
+   ```
+   The structure inside must look exactly like this:
+   ```
+   client/your-extensions/widgets/exb-custom-map-scale/
+   ├── manifest.json
+   ├── config.json
+   ├── icon.svg
+   └── src/
+       ├── config.ts
+       ├── runtime/
+       │   ├── widget.tsx
+       │   └── translations/
+       └── setting/
+           └── setting.tsx
+   ```
 
-| Setting | Description |
-|--------|-------------|
-| **Map Instance** | Link the widget to a map widget on the page |
-| **Apostrophe** | Toggle Swiss-style thousands separator (`1:25'000` vs `1:25000`) |
-| **Font size** | Dropdown text size in px (10–24 px) |
-| **Predefined scales** | Check/uncheck standard CH scales; add custom values |
+---
 
-### Default scales
+### Step 2 — Install dependencies and compile
+
+Open a terminal in the **root folder** of the Experience Builder Developer Edition (where `package.json` is located) and run:
+
+```bash
+npm install
+```
+
+Then compile the entire project including the custom widget:
+
+```bash
+npm run build
+```
+
+> This process can take several minutes. The TypeScript/TSX source files are compiled to JavaScript and placed in the `client/dist/` output folder.
+
+After the build, verify that the compiled widget exists at:
+```
+client/dist/widgets/your-extensions/exb-custom-map-scale/
+```
+It should contain a `dist/` subfolder with `runtime/widget.js`, `setting/setting.js` and the translation files.
+
+---
+
+### Step 3 — Host the compiled widget on a web server
+
+The compiled widget folder must be publicly accessible via HTTPS from your ArcGIS Enterprise environment.
+
+1. Copy the compiled widget folder to your web server:
+   ```
+   client/dist/widgets/your-extensions/exb-custom-map-scale/
+   ```
+   Example target path on the web server:
+   ```
+   /var/www/html/exb-widgets/exb-custom-map-scale/
+   ```
+
+2. Make sure the folder is accessible via a URL, for example:
+   ```
+   https://your-webserver.example.com/exb-widgets/exb-custom-map-scale/
+   ```
+
+3. Verify that the `manifest.json` is reachable in a browser:
+   ```
+   https://your-webserver.example.com/exb-widgets/exb-custom-map-scale/manifest.json
+   ```
+   You should see the JSON content of the manifest file.
+
+> **HTTPS is required.** ArcGIS Enterprise will refuse to load widgets served over plain HTTP.
+
+> **CORS:** Make sure your web server sends the appropriate CORS headers so that ArcGIS Enterprise can load the widget files cross-origin. For nginx, add `add_header Access-Control-Allow-Origin "*";` to the location block; for IIS, configure the CORS headers in `web.config`.
+
+---
+
+### Step 4 — Register the widget in ArcGIS Enterprise
+
+1. Sign in to your **ArcGIS Enterprise portal** as an administrator.
+2. Go to **Organisation → Settings → ArcGIS Experience Builder**.
+3. Under **Custom widgets**, click **Add widget**.
+4. Enter the full HTTPS URL to the widget's `manifest.json`:
+   ```
+   https://your-webserver.example.com/exb-widgets/exb-custom-map-scale/manifest.json
+   ```
+5. Click **Save**.
+
+ArcGIS Enterprise will fetch and validate the manifest. Once registered, the widget is available to all Experience Builder users in your organisation.
+
+---
+
+### Step 5 — Use the widget in Experience Builder
+
+1. Open ArcGIS Experience Builder and create or edit an application.
+2. In the widget panel, scroll to the **Custom** section — the widget **exb-custom-map-scale** appears there.
+3. Drag the widget onto your page.
+4. Open the widget settings panel:
+   - **Map Instance** — select the map widget to connect to
+   - **Apostrophe** — toggle Swiss-style formatting (`1:25'000`)
+   - **Font size** — adjust dropdown text size (10–24 px)
+   - **Predefined scales** — check/uncheck standard scales or add custom values
+5. Save and publish the application.
+
+---
+
+## Configuration reference
+
+| Setting | Default | Description |
+|---------|---------|-------------|
+| **Map Instance** | — | The map widget this scale widget reads from and controls |
+| **Apostrophe** | On | Swiss thousands separator: `1:25'000` vs `1:25000` |
+| **Font size** | 14 px | Text size of the dropdown (10–24 px) |
+| **Predefined scales** | see below | Which scales appear in the dropdown |
+
+### Default predefined scales
 
 ```
-1:500  1:1'000  1:2'000  1:5'000  1:10'000
-1:25'000  1:50'000  1:100'000  1:200'000
-1:500'000  1:1'000'000
+1:500  ·  1:1'000  ·  1:2'000  ·  1:5'000  ·  1:10'000
+1:25'000  ·  1:50'000  ·  1:100'000  ·  1:200'000
+1:500'000  ·  1:1'000'000
 ```
 
 ---
@@ -107,18 +207,14 @@ exb-custom-map-scale/
 
 ---
 
-## Development
+## Technical notes
 
-The widget is written in **TypeScript / React (TSX)** using the **Esri Jimu framework** (ArcGIS Experience Builder SDK 1.17).
+The widget is written in **TypeScript / React (TSX)** using the **Esri Jimu framework** (ArcGIS Experience Builder SDK 1.17). All styling uses **Calcite Design System CSS variables** exclusively — no hardcoded colours or font sizes — so the widget automatically adapts to light/dark themes and the portal's brand colours.
 
-All styling uses **Calcite Design System CSS variables** exclusively — no hardcoded colours or fonts — so the widget automatically adapts to light/dark themes.
-
-### Key implementation notes
-
-- `view.watch('scale', ...)` reacts to every zoom/pan — no polling.
-- `view.goTo({ scale }, { animate: true })` for smooth zoom transitions.
+- `view.watch('scale', ...)` reacts to every zoom/pan — no polling required.
+- `view.goTo({ scale }, { animate: true })` provides smooth zoom transitions.
 - `view.scale` in WKID 2056 (metres) is used directly — no unit conversion needed.
-- The "Custom scale…" option opens an inline input field; `Escape` cancels, `Enter` confirms.
+- Choosing "Custom scale…" opens an inline input field; `Enter` confirms, `Escape` cancels.
 
 ---
 
