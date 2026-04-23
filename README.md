@@ -139,13 +139,12 @@ The compiled widget folder must be publicly accessible via HTTPS from your ArcGI
 ### Step 4 — Register the widget in ArcGIS Enterprise
 
 1. Sign in to your **ArcGIS Enterprise portal** as an administrator.
-2. Go to **Organisation → Settings → ArcGIS Experience Builder**.
-3. Under **Custom widgets**, click **Add widget**.
-4. Enter the full HTTPS URL to the widget's `manifest.json`:
+2. Go to **Content → New element → Application → Experience Builder Widget**.
+3. Enter the full HTTPS URL to the widget's `manifest.json`:
    ```
    https://your-webserver.example.com/exb-widgets/exb-custom-map-scale/manifest.json
    ```
-5. Click **Save**.
+4. Click **Save**.
 
 ArcGIS Enterprise will fetch and validate the manifest. Once registered, the widget is available to all Experience Builder users in your organisation.
 
