@@ -1,0 +1,27 @@
+{
+  "name": "exb-custom-map-scale",
+  "label": "exb-custom-map-scale",
+  "type": "widget",
+  "version": "1.0.0",
+  "sdkVersion": "1.17.0",
+  "author": "Reto Jau",
+  "description": "ArcGIS Experience Builder custom widget to display and control the map scale via dropdown. Designed for WKID 2056 (Swiss LV95 coordinates).",
+  "copyright": "© 2025 Reto Jau",
+  "license": "http://www.apache.org/licenses/LICENSE-2.0",
+  "properties": {
+    "configurable": true,
+    "hasConfig": true
+  },
+  "settingConfig": {
+    "main": "setting/setting"
+  },
+  "translatedLocales": [
+    "en",
+    "de",
+    "fr"
+  ],
+  "defaultSize": {
+    "width": 160,
+    "height": 32
+  }
+}
