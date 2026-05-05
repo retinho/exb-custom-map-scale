@@ -1,6 +1,7 @@
-import { React, AllWidgetProps, FormattedMessage } from 'jimu-core';
+import { React, AllWidgetProps } from 'jimu-core';
 import { JimuMapViewComponent, JimuMapView } from 'jimu-arcgis';
-import defaultMessages from '../runtime/translations/default';
+import { Select, Option, TextInput, Button } from 'jimu-ui';
+import defaultMessages from './translations/default';
 import { IMConfig } from '../config';
 
 const CUSTOM_KEY = '__custom__';
@@ -50,7 +51,7 @@ export default function MapScale(props: AllWidgetProps<IMConfig>) {
     applyScale(val);
   };
 
-  const onSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const onSelectChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     if (e.target.value === CUSTOM_KEY) { setShowCustom(true); return; }
     setShowCustom(false);
     applyScale(Number(e.target.value));
@@ -90,52 +91,37 @@ export default function MapScale(props: AllWidgetProps<IMConfig>) {
       />
 
       {/* ── Dropdown ───────────────────────────────────────────────────── */}
-      <select
+      <Select
         disabled={!connected}
         value={activeVal}
         onChange={onSelectChange}
-        style={{
-          fontFamily: 'var(--calcite-sans-family)',
-          fontSize: `${fontSize}px`,
-          fontWeight: 'var(--calcite-font-weight-medium)' as any,
-          color: connected ? 'var(--calcite-color-text-1)' : 'var(--calcite-color-text-3)',
-          background: 'var(--calcite-color-foreground-1)',
-          border: '1px solid var(--calcite-color-border-1)',
-          borderRadius: 'var(--calcite-border-radius)',
-          padding: '0 28px 0 8px',
-          height: '100%',
-          minHeight: '28px',
-          width: '100%',
-          appearance: 'auto',
-          cursor: connected ? 'pointer' : 'not-allowed',
-          outline: 'none'
-        }}
+        aria-label={msg('customOption') || 'Massstab auswählen'}
         title={connected ? fmt(scale) : msg('noMap')}
+        style={{ width: '100%', height: '100%', minHeight: '28px', fontSize: `${fontSize}px` }}
       >
         {/* Aktueller Massstab als Platzhalter wenn nicht in Vordefiniert */}
         {connected && scale != null && activeVal === '' && !showCustom && (
-          <option value="" disabled style={{ fontFamily: 'var(--calcite-sans-family)', fontSize: `${fontSize}px` }}>
+          <Option value="" disabled style={{ fontSize: `${fontSize}px` }}>
             {fmt(scale)}
-          </option>
+          </Option>
         )}
         {!connected && (
-          <option value="" disabled style={{ fontFamily: 'var(--calcite-sans-family)', fontSize: `${fontSize}px` }}>
+          <Option value="" disabled style={{ fontSize: `${fontSize}px` }}>
             {msg('noMap')}
-          </option>
+          </Option>
         )}
         {scales.map(s => (
-          <option key={s} value={s.toString()}
-            style={{ fontFamily: 'var(--calcite-sans-family)', fontSize: `${fontSize}px` }}>
+          <Option key={s} value={s.toString()} style={{ fontSize: `${fontSize}px` }}>
             {fmt(s)}
-          </option>
+          </Option>
         ))}
-        <option disabled style={{ fontFamily: 'var(--calcite-sans-family)', color: 'var(--calcite-color-text-3)' }}>
+        <Option value="divider" disabled style={{ color: 'var(--calcite-color-text-3)' }}>
           ────────────────
-        </option>
-        <option value={CUSTOM_KEY} style={{ fontFamily: 'var(--calcite-sans-family)', fontSize: `${fontSize}px` }}>
+        </Option>
+        <Option value={CUSTOM_KEY} style={{ fontSize: `${fontSize}px` }}>
           {msg('customOption')}
-        </option>
-      </select>
+        </Option>
+      </Select>
 
       {/* ── Freie Eingabe (erscheint bei Auswahl "Eigener Massstab…") ──── */}
       {showCustom && (
@@ -148,10 +134,9 @@ export default function MapScale(props: AllWidgetProps<IMConfig>) {
           }}>
             1:
           </span>
-          <input
+          <TextInput
             ref={inputRef}
             type="text"
-            inputMode="numeric"
             value={customVal}
             onChange={e => { setCustomVal(e.target.value); setInputError(false); }}
             onKeyDown={e => {
@@ -159,42 +144,40 @@ export default function MapScale(props: AllWidgetProps<IMConfig>) {
               if (e.key === 'Escape') { setShowCustom(false); setCustomVal(''); setInputError(false); }
             }}
             placeholder={msg('customPlaceholder')}
+            aria-label={msg('customPlaceholder')}
             style={{
-              fontFamily: 'var(--calcite-sans-family)',
               fontSize: `${Math.max(fontSize - 2, 10)}px`,
-              color: 'var(--calcite-color-text-1)',
-              background: 'var(--calcite-color-foreground-1)',
-              border: `1px solid ${inputError ? 'var(--calcite-color-status-danger)' : 'var(--calcite-color-border-1)'}`,
-              borderRadius: 'var(--calcite-border-radius)',
-              padding: '2px 6px', height: '24px',
+              border: inputError ? '1px solid var(--calcite-color-status-danger)' : undefined,
+              height: '24px',
               flex: 1, minWidth: 0, outline: 'none'
             }}
           />
-          <button
+          <Button
+            type="primary"
             onClick={applyCustom}
+            aria-label={msg('applyCustomLabel')}
             style={{
-              fontFamily: 'var(--calcite-sans-family)',
               fontSize: `${Math.max(fontSize - 2, 10)}px`,
-              fontWeight: 'var(--calcite-font-weight-medium)' as any,
-              color: 'var(--calcite-color-foreground-1)',
-              background: 'var(--calcite-color-brand)',
-              border: 'none',
-              borderRadius: 'var(--calcite-border-radius)',
               padding: '0 8px', height: '24px',
-              cursor: 'pointer', flexShrink: 0
             }}
-          >↵</button>
-          <button
+          >↵</Button>
+          <Button
+            type="tertiary"
             onClick={() => { setShowCustom(false); setCustomVal(''); setInputError(false); }}
+            aria-label={msg('cancelCustomLabel')}
             style={{
-              fontFamily: 'var(--calcite-sans-family)',
               fontSize: `${fontSize}px`,
-              color: 'var(--calcite-color-text-3)',
-              background: 'none', border: 'none',
               padding: '0 4px', height: '24px',
-              cursor: 'pointer', flexShrink: 0, lineHeight: 1
             }}
-          >✕</button>
+          >✕</Button>
+        </div>
+      )}
+    </div>
+  );
+}
+
+            }}
+          >✕</Button>
         </div>
       )}
     </div>

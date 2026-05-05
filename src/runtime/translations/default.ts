@@ -4,6 +4,8 @@ export default {
   noMap: 'No map',
   customOption: 'Custom scale…',
   customPlaceholder: 'e.g. 7500',
+  applyCustomLabel: 'Confirm',
+  cancelCustomLabel: 'Cancel',
   mapSectionTitle: 'Map Instance',
   scalesSectionTitle: 'Scales',
   displaySectionTitle: 'Display',
@@ -11,5 +13,6 @@ export default {
   fontSizeLabel: 'Font size (px)',
   predefinedScalesLabel: 'Predefined scales',
   addScaleLabel: 'Add custom scale',
-  addScaleButton: 'Add'
+  addScaleButton: 'Add',
+  removeScale: 'Remove'
 }

@@ -6,6 +6,8 @@ System.register([], function (_export) {
         noMap: 'Aucune carte',
         customOption: 'Échelle libre…',
         customPlaceholder: 'ex. 7500',
+        applyCustomLabel: 'Confirmer',
+        cancelCustomLabel: 'Annuler',
         mapSectionTitle: 'Instance de la carte',
         scalesSectionTitle: 'Échelles',
         displaySectionTitle: 'Affichage',
@@ -13,7 +15,8 @@ System.register([], function (_export) {
         fontSizeLabel: 'Taille de police (px)',
         predefinedScalesLabel: 'Échelles prédéfinies',
         addScaleLabel: 'Ajouter une échelle',
-        addScaleButton: 'Ajouter'
+        addScaleButton: 'Ajouter',
+        removeScale: 'Supprimer'
       });
     }
   };

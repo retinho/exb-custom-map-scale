@@ -6,6 +6,8 @@ System.register([], function (_export) {
         noMap: 'Keine Karte',
         customOption: 'Eigener Massstab…',
         customPlaceholder: 'z.B. 7500',
+        applyCustomLabel: 'Bestätigen',
+        cancelCustomLabel: 'Abbrechen',
         mapSectionTitle: 'Karten-Instanz',
         scalesSectionTitle: 'Massstäbe',
         displaySectionTitle: 'Darstellung',
@@ -13,7 +15,8 @@ System.register([], function (_export) {
         fontSizeLabel: 'Schriftgrösse (px)',
         predefinedScalesLabel: 'Vordefinierte Massstäbe',
         addScaleLabel: 'Eigenen Massstab hinzufügen',
-        addScaleButton: 'Hinzufügen'
+        addScaleButton: 'Hinzufügen',
+        removeScale: 'Entfernen'
       });
     }
   };

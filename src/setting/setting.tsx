@@ -19,7 +19,7 @@ export default function Setting(props: AllWidgetSettingProps<IMConfig>) {
   const [customInput, setCustomInput] = React.useState('');
   const [inputError, setInputError]   = React.useState(false);
 
-  const set = (key: string, value: any) =>
+  const set = (key: string, value: unknown) =>
     onSettingChange({ id, config: config.set(key, value) });
 
   const onMapSelected = (ids: string[]) =>
@@ -123,12 +123,11 @@ export default function Setting(props: AllWidgetSettingProps<IMConfig>) {
                   background: 'var(--calcite-color-foreground-2)', ...calciteLabel
                 }}>
                   1:{fmt(s)}
-                  <button onClick={() => removeCustom(s)} style={{
-                    background: 'none', border: 'none', padding: '0 0 0 2px',
-                    cursor: 'pointer', color: 'var(--calcite-color-text-3)',
-                    fontFamily: 'var(--calcite-sans-family)',
+                  <Button type="tertiary" onClick={() => removeCustom(s)} aria-label={props.intl ? props.intl.formatMessage({ id: 'removeScale', defaultMessage: defaultMessages.removeScale }) : defaultMessages.removeScale} style={{
+                    padding: '0 0 0 4px', height: 'auto', minWidth: 'auto',
+                    color: 'var(--calcite-color-text-3)',
                     fontSize: 'var(--calcite-font-size-0)', lineHeight: 1
-                  }}>×</button>
+                  }}>✕</Button>
                 </span>
               ))}
             </div>
@@ -139,19 +138,15 @@ export default function Setting(props: AllWidgetSettingProps<IMConfig>) {
         <SettingRow label={<FormattedMessage id="addScaleLabel" defaultMessage={defaultMessages.addScaleLabel} />}>
           <div style={{ display: 'flex', gap: '4px', alignItems: 'center', width: '100%' }}>
             <span style={{ ...calciteLabel, whiteSpace: 'nowrap' }}>1:</span>
-            <input
+            <TextInput
               type="text"
-              inputMode="numeric"
               value={customInput}
               onChange={e => { setCustomInput(e.target.value); setInputError(false); }}
               onKeyDown={e => e.key === 'Enter' && addCustom()}
-              placeholder="z.B. 7500"
+              placeholder={props.intl ? props.intl.formatMessage({ id: 'customPlaceholder', defaultMessage: defaultMessages.customPlaceholder }) : defaultMessages.customPlaceholder}
               style={{
-                ...calciteLabel,
-                flex: 1, minWidth: 0, padding: '3px 6px',
-                border: `1px solid ${inputError ? 'var(--calcite-color-status-danger)' : 'var(--calcite-color-border-1)'}`,
-                borderRadius: 'var(--calcite-border-radius)',
-                background: 'var(--calcite-color-foreground-1)', outline: 'none'
+                flex: 1, minWidth: 0, height: '26px',
+                border: inputError ? '1px solid var(--calcite-color-status-danger)' : undefined
               }}
             />
             <Button size="sm" type="primary" onClick={addCustom}>
@@ -162,5 +157,8 @@ export default function Setting(props: AllWidgetSettingProps<IMConfig>) {
       </SettingSection>
 
     </div>
+  );
+}
+   </div>
   );
 }
