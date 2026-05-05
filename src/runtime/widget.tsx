@@ -95,7 +95,7 @@ export default function MapScale(props: AllWidgetProps<IMConfig>) {
         disabled={!connected}
         value={activeVal}
         onChange={onSelectChange}
-        aria-label={msg('customOption') || 'Massstab auswählen'}
+        aria-label={msg('customOption')}
         title={connected ? fmt(scale) : msg('noMap')}
         style={{ width: '100%', height: '100%', minHeight: '28px', fontSize: `${fontSize}px` }}
       >

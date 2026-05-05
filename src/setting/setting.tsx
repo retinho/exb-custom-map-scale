@@ -99,11 +99,10 @@ export default function Setting(props: AllWidgetSettingProps<IMConfig>) {
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2px 12px', width: '100%' }}>
             {ALL_STANDARD_SCALES.map(s => (
               <label key={s} style={{ display: 'flex', alignItems: 'center', gap: '6px', cursor: 'pointer', padding: '3px 0' }}>
-                <input
-                  type="checkbox"
+                <Checkbox
                   checked={current.includes(s)}
                   onChange={() => toggleScale(s)}
-                  style={{ cursor: 'pointer', accentColor: 'var(--calcite-color-brand)', flexShrink: 0 }}
+                  style={{ flexShrink: 0 }}
                 />
                 <span style={calciteLabel}>1:{fmt(s)}</span>
               </label>
