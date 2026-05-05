@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "jsx": "react",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "baseUrl": ".",
+    "ignoreDeprecations": "6.0",
+    "paths": {
+      "jimu-core": ["/Users/retojau/Esri/ArcGISExperienceBuilder/client/jimu-core"],
+      "jimu-ui": ["/Users/retojau/Esri/ArcGISExperienceBuilder/client/jimu-ui"],
+      "jimu-ui/*": ["/Users/retojau/Esri/ArcGISExperienceBuilder/client/jimu-ui/*"],
+      "jimu-arcgis": ["/Users/retojau/Esri/ArcGISExperienceBuilder/client/jimu-arcgis"],
+      "jimu-for-builder": ["/Users/retojau/Esri/ArcGISExperienceBuilder/client/jimu-for-builder"]
+    },
+    "typeRoots": [
+      "./node_modules/@types",
+      "/Users/retojau/Esri/ArcGISExperienceBuilder/client/node_modules/@types"
+    ]
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
+}

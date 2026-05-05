@@ -1,7 +1,7 @@
 import { React, FormattedMessage } from 'jimu-core';
 import { AllWidgetSettingProps } from 'jimu-for-builder';
 import { MapWidgetSelector, SettingSection, SettingRow } from 'jimu-ui/advanced/setting-components';
-import { NumericInput, Switch, Button } from 'jimu-ui';
+import { NumericInput, Switch, Button, Checkbox, TextInput } from 'jimu-ui';
 import defaultMessages from '../runtime/translations/default';
 import { IMConfig } from '../config';
 
@@ -123,7 +123,7 @@ export default function Setting(props: AllWidgetSettingProps<IMConfig>) {
                   background: 'var(--calcite-color-foreground-2)', ...calciteLabel
                 }}>
                   1:{fmt(s)}
-                  <Button type="tertiary" onClick={() => removeCustom(s)} aria-label={props.intl ? props.intl.formatMessage({ id: 'removeScale', defaultMessage: defaultMessages.removeScale }) : defaultMessages.removeScale} style={{
+                  <Button type="tertiary" onClick={() => removeCustom(s)} aria-label={props.intl ? props.intl.formatMessage({ id: 'removeScale', defaultMessage: defaultMessages['removeScale' as keyof typeof defaultMessages] }) : defaultMessages['removeScale' as keyof typeof defaultMessages]} style={{
                     padding: '0 0 0 4px', height: 'auto', minWidth: 'auto',
                     color: 'var(--calcite-color-text-3)',
                     fontSize: 'var(--calcite-font-size-0)', lineHeight: 1
@@ -143,7 +143,7 @@ export default function Setting(props: AllWidgetSettingProps<IMConfig>) {
               value={customInput}
               onChange={e => { setCustomInput(e.target.value); setInputError(false); }}
               onKeyDown={e => e.key === 'Enter' && addCustom()}
-              placeholder={props.intl ? props.intl.formatMessage({ id: 'customPlaceholder', defaultMessage: defaultMessages.customPlaceholder }) : defaultMessages.customPlaceholder}
+              placeholder={props.intl ? props.intl.formatMessage({ id: 'customPlaceholder', defaultMessage: defaultMessages['customPlaceholder' as keyof typeof defaultMessages] }) : defaultMessages['customPlaceholder' as keyof typeof defaultMessages]}
               style={{
                 flex: 1, minWidth: 0, height: '26px',
                 border: inputError ? '1px solid var(--calcite-color-status-danger)' : undefined
@@ -157,8 +157,5 @@ export default function Setting(props: AllWidgetSettingProps<IMConfig>) {
       </SettingSection>
 
     </div>
-  );
-}
-   </div>
   );
 }
